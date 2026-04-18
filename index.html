@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lista de Asistencia</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #0f172a;
+    color: white;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #38bdf8;
+}
+
+.prof {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.student {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    border-bottom: 1px solid #334155;
+}
+
+button {
+    margin-top: 15px;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    background: #38bdf8;
+    color: black;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.total {
+    margin-top: 15px;
+    text-align: center;
+}
+</style>
+
+</head>
+<body>
+
+<h1>📋 Lista de Asistencia</h1>
+<div class="prof">Profesora: <b>Lucya Volquez</b></div>
+
+<div class="container" id="lista"></div>
+
+<div class="total" id="total"></div>
+
+<button onclick="exportar()">Exportar Lista</button>
+
+<script>
+
+const estudiantes = [
+"JENARO BATISTA",
+"EUGENIA BLANCO BATISTA",
+"ROCIANI ROSABEL CABRULLA MENDEZ",
+"ANABEL CUEVAS",
+"OMAR ISRAEL CUEVAS MORETA",
+"JEFFERSON RAFAEL DE LEON MATOS",
+"LUIS DANIEL ENCARNACION",
+"ROMER ARISTIL ESPINOSA ESPINOSA",
+"ROSMERYS ROBELINA FELIZ DE MATOS",
+"EMILY GARCIA LOPEZ",
+"WEISER JOSE GOMEZ FERRERAS",
+"ANDI FRANCISCO HEREDIA DE OLEO",
+"REIMON HEREDIA FELIZ",
+"RANDY NICOLAS HEREDIA MATOS",
+"DAVID EMMANUEL MATOS CORNIELL",
+"WILMER ANTONIO MATOS FERRERAS",
+"BRYANT SALVADOR MATOS PEREZ",
+"ALEXANDER CORNELIO MATOS RAMIREZ",
+"VLADIMIR VILMERDINA BATISTA",
+"JAZMYELYS DESIREE MEDINA REYES",
+"ALAN EDRYS MÉNDEZ FELIZ",
+"JOSELITO NÚÑEZ ROZON",
+"SCARLET JANIZAIT PEGUERO FLORIAN",
+"JOSEPH BISMARCK PEREZ FELIZ",
+"YANAISI PEREZ PEREZ",
+"ROSA ELENA PINEDA FELIZ",
+"DINEYDI ESMERALDA RAMIREZ MATOS",
+"YARISBEL REYES RAMIREZ",
+"NIWTON ELIAS REYES RAMIREZ",
+"MAIRENI CAMILA SANTANA MEDINA",
+"JOAN ALBERTO SANTANA VICTORIA",
+"BRAYAN ALEXANDER SEGURA FELIZ",
+"JOSUE SENA DIAZ",
+"FREISY FERNANDA TRINIDAD RIVAS",
+"ESTEBAN URBAEZ FORCH",
+"INGRID VARGAS MEDINA"
+];
+
+const lista = document.getElementById("lista");
+
+estudiantes.forEach((nombre, i) => {
+    const div = document.createElement("div");
+    div.className = "student";
+    div.innerHTML = `
+        <span>${nombre}</span>
+        <input type="checkbox" onchange="contar()">
+    `;
+    lista.appendChild(div);
+});
+
+function contar() {
+    const checks = document.querySelectorAll("input:checked").length;
+    document.getElementById("total").innerText = "Presentes: " + checks;
+}
+
+function exportar() {
+    let texto = "Lista de Asistencia - Lucya Volquez\n\n";
+
+    document.querySelectorAll(".student").forEach(s => {
+        const nombre = s.children[0].innerText;
+        const estado = s.children[1].checked ? "Presente" : "Ausente";
+        texto += nombre + " - " + estado + "\n";
+    });
+
+    const blob = new Blob([texto], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "asistencia.txt";
+    link.click();
+}
+
+</script>
+
+</body>
+</html>
